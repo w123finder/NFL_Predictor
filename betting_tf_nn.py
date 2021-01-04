@@ -179,21 +179,29 @@ class_large.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy
 class_small.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy'])
 class_gen.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy'])
 
-early_stopping_ital=callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='min')
+early_stopping_large=callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='min')
 
-filepath_ital="top_model_ital.h5"
+filepath_large="top_model_large.h5"
 
-checkpoint_ital = callbacks.ModelCheckpoint(filepath_ital, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+checkpoint_large = callbacks.ModelCheckpoint(filepath_large, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 
-callbacks_list_ital = [early_stopping_ital,checkpoint_ital]
+callbacks_list_large = [early_stopping_large,checkpoint_large]
 
-early_stopping_noital=callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='min')
+early_stopping_small=callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='min')
 
-filepath_noital="top_model_noital.h5"
+filepath_small="top_model_small.h5"
 
-checkpoint_noital = callbacks.ModelCheckpoint(filepath_noital, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+checkpoint_small = callbacks.ModelCheckpoint(filepath_small, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 
-callbacks_list_noital = [early_stopping_noital,checkpoint_noital]
+callbacks_list_small = [early_stopping_small,checkpoint_small]
+
+early_stopping_gen=callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='min')
+
+filepath_gen="top_model_gen.h5"
+
+checkpoint_gen = callbacks.ModelCheckpoint(filepath_gen, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+
+callbacks_list_gen = [early_stopping_gen,checkpoint_gen]
 
 
 class_large.fit(X_trn_linear_large, cover_trn_large, 
@@ -202,7 +210,7 @@ class_large.fit(X_trn_linear_large, cover_trn_large,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
-          callbacks=callbacks_list_ital)
+          callbacks=callbacks_list_large)
 
 class_small.fit(X_trn_linear_small, cover_trn_small, 
           validation_split=.3,
@@ -210,7 +218,7 @@ class_small.fit(X_trn_linear_small, cover_trn_small,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
-          callbacks=callbacks_list_noital)
+          callbacks=callbacks_list_small)
 
 class_gen.fit(X_trn_linear, cover_trn, 
           validation_split=.3,
@@ -218,7 +226,7 @@ class_gen.fit(X_trn_linear, cover_trn,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
-          callbacks=callbacks_list_noital)
+          callbacks=callbacks_list_gen)
 
 
 
